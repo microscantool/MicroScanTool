@@ -1,0 +1,22 @@
+<table id="signals"></table>
+<script>
+async function loadSignals() {
+    const res = await fetch("https://my-microcap-scanner.onrender.com/signals");
+    const data = await res.json();
+    const table = document.getElementById("signals");
+    table.innerHTML = "<tr><th>Ticker</th><th>Price</th><th>Runner Score</th><th>Halt Score</th></tr>";
+    data.forEach(stock => {
+        table.innerHTML += `<tr onclick="openStock('${stock.ticker}')">
+            <td>${stock.ticker}</td>
+            <td>${stock.price}</td>
+            <td>${stock.runner_score}</td>
+            <td>${stock.halt_score}</td>
+        </tr>`;
+    });
+}
+function openStock(ticker) {
+    window.location.href = `robinhood://symbol/${ticker}`;
+}
+loadSignals();
+setInterval(loadSignals, 30000);
+</script>
